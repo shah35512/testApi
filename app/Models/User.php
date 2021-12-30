@@ -2,6 +2,9 @@
 
 namespace App\Models;
 
+use App\Models\Agence\Agence;
+use App\Models\Customer\Customers;
+use App\Models\Employee\Employee;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -18,10 +21,26 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
         'email',
         'password',
+        'img',
+        'phone_number',
     ];
+//  One to one relation with Employee.
+    public function employees()
+    {
+        return $this->hasOne(Employee::class);
+    }
+//  One to one relation with Customers.
+    public function customers()
+    {
+        return $this->hasOne(Customers::class);
+    }
+//  One to one relation with Agences.
+    public function agences()
+    {
+        return $this->hasOne(Agence::class);
+    }
 
     /**
      * The attributes that should be hidden for serialization.

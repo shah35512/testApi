@@ -3,18 +3,25 @@
 namespace App\Http\Controllers\Projects;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Projects\ProjectStoreRequest;
+use App\Models\Project\Project;
 use Illuminate\Http\Request;
 
 class ProjectController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        //
+        $projects = Project::with(['floors.units'])->get();
+        if ($projects->isEmpty())
+            return response()->json(
+                [
+                    'message' => 'No projects found.'
+                ], 404);
+        return response()->json(
+            [
+                'message' => 'Projects retrieved successfully',
+                'data' => $projects
+            ]);
     }
 
     /**
@@ -27,26 +34,31 @@ class ProjectController extends Controller
         //
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+
+    public function store(ProjectStoreRequest $request)
     {
-        //
+        $project = Project::create($request->all());
+        return response()->json(
+            [
+                'message' => 'Project created successfully.',
+                'data' => $project
+            ]);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
-        //
+        $project = Project::with(['floors.units'])->find($id);
+        if (!$project)
+            return response()->json(
+                [
+                    'message' => 'No project found with the provided id.'
+                ], 404);
+        return response()->json(
+            [
+                'message' => 'Project retrieved successfully',
+                'data' => $project
+            ]
+        );
     }
 
     /**
@@ -60,26 +72,37 @@ class ProjectController extends Controller
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
-        //
+        $project = Project::find($id);
+        if (!$project)
+            return response()->json(
+                [
+                    'message' => 'No project found with the provided id.',
+                ], 404);
+        $project->update($request->all());
+        return response()->json(
+            [
+                'message' => 'Project Updated successfully',
+                'data' => $project
+            ]
+        );
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
-        //
+        $project = Project::find($id);
+        if (!$project)
+            return response()->json(
+                [
+                    'message' => 'No project found with the provided id.'
+                ], 404);
+        $project->delete();
+        return response()->json(
+            [
+                'message' => 'Project deleted successfully',
+                'data' => $project
+            ]
+        );
     }
 }

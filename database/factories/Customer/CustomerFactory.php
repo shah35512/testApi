@@ -1,10 +1,10 @@
 <?php
 
-namespace Database\Factories\Project;
+namespace Database\Factories\Customer;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class FloorFactory extends Factory
+class CustomerFactory extends Factory
 {
     /**
      * Define the model's default state.

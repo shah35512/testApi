@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\Projects\FloorController;
+use App\Http\Controllers\Projects\ProjectController;
+use App\Http\Controllers\Projects\UnitController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -17,3 +20,8 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::apiResource('/projects', ProjectController::class);
+Route::apiResource('/floors', FloorController::class);
+Route::apiResource('/units', UnitController::class);
+

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Projects;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Projects\FloorStoreRequest;
+use App\Models\Project\Floor;
 use Illuminate\Http\Request;
 
 class FloorController extends Controller
@@ -27,15 +29,14 @@ class FloorController extends Controller
         //
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function store(FloorStoreRequest $request)
     {
-        //
+        $floor = Floor::create($request->all());
+        return response()->json(
+            [
+                'message' => 'Floor created successfully.',
+                'data' => $floor
+            ]);
     }
 
     /**
